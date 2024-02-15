@@ -1,0 +1,15 @@
+.formulario {
+  background-color: #e0e0e0;
+  border: 1px solid #999;
+  padding: 15px;
+  margin: 20px;
+}
+
+.formulario label {
+  color: #ff5733;
+}
+
+.formularioinput[type="text"] {
+  border: 1px solid #ff5733;
+  padding: 5px;
+}
