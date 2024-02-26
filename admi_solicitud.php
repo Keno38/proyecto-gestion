@@ -56,7 +56,7 @@ $nombreDepartamento = isset($_SESSION['usuario']['departamento']) ? $_SESSION['u
                 <div class="sol-div">
                     <?php
                     // Consulta para obtener los insumos solicitados e ingresados
-                    $consultaInsumos = "SELECT s.id_solicitud, s.id_usuario, s.id_insumo, s.cantidad,s.fecha_solicitud, u.nombre AS nombre, i.insumo, d.departamento 
+                    $consultaInsumos = "SELECT s.id_solicitud, s.id_usuario, s.id_insumo, s.cantidad,s.fecha_solicitud, u.nombre AS nombreu, i.nombre AS nombre , d.departamento 
                             FROM solicitud s 
                             INNER JOIN usuarios u ON s.id_usuario = u.id 
                             INNER JOIN insumo i ON s.id_insumo = i.id_insumo 
@@ -69,7 +69,6 @@ $nombreDepartamento = isset($_SESSION['usuario']['departamento']) ? $_SESSION['u
                     <tr>
                         <th>Seleccionar</th>
                         <th>ID Solicitud</th>
-                        <th>ID Usuario</th>
                         <th>Nombre Usuario</th>
                         <th>Insumo</th>
                         <th>Cantidad</th>  
@@ -81,9 +80,8 @@ $nombreDepartamento = isset($_SESSION['usuario']['departamento']) ? $_SESSION['u
                             echo "<tr>
                         <td><input type='checkbox' name='seleccion[]' value='{$fila['id_solicitud']}'></td>   
                         <td>{$fila['id_solicitud']}</td>
-                        <td>{$fila['id_usuario']}</td>
+                        <td>{$fila['nombreu']}</td>
                         <td>{$fila['nombre']}</td>
-                        <td>{$fila['insumo']}</td>
                         <td>{$fila['cantidad']}</td>                      
                         <td>{$fila['departamento']}</td>
                         <td>{$fila['fecha_solicitud']}</td>
@@ -98,13 +96,20 @@ $nombreDepartamento = isset($_SESSION['usuario']['departamento']) ? $_SESSION['u
 
                     mysqli_free_result($resultadoInsumos);
                     ?>
-                    <input type="submit" value="Procesar Selección">
+                    <input type="submit" value="Ver Detalle ">
                 </div>
 
 
                 </form>
         </div>
     </div>
+
+    <script>
+        // Actualizar el contenido del contenedor de mensaje usando JavaScript
+        document.getElementById('mensaje-container').innerHTML = '<?php echo addslashes($mensaje); ?>';
+    </script>
+
+
 </body>
 
 </html>

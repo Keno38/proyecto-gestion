@@ -37,7 +37,7 @@ if ($resultadoDepartamento) {
 $nombreDepartamento = isset($_SESSION['usuario']['departamento']) ? $_SESSION['usuario']['departamento'] : '';
 
 // Obtener lista de insumos desde la base de datos
-$consultaInsumos = "SELECT id_insumo, insumo FROM insumo";
+$consultaInsumos = "SELECT id_insumo, nombre FROM insumo";
 $resultadoInsumos = mysqli_query($conexion, $consultaInsumos);
 
 if (!$resultadoInsumos) {
@@ -57,8 +57,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $insumo = $_POST["insumo"];
     $cantidad = $_POST["cantidad"];
 
-
-
     $consultaVerificacion = "SELECT * FROM solicitud WHERE id_usuario = {$usuario['id']} AND id_insumo = $insumo AND fecha_solicitud = NOW()";
     $resultadoVerificacion = mysqli_query($conexion, $consultaVerificacion);
 
@@ -66,24 +64,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Ya existe una solicitud para este usuario e insumo
         $mensaje = "Ya existe una solicitud para este usuario e insumo.";
         $disabled = "disabled"; // Deshabilitar el botón de envío
-
     } else {
         // No existe, proceder con la inserción
         $consultaInsercion = "INSERT INTO solicitud (id_usuario, id_insumo, cantidad, fecha_solicitud) 
                                  VALUES ({$usuario['id']}, $insumo, $cantidad, NOW())";
 
         if (mysqli_query($conexion, $consultaInsercion)) {
-            $mensaje = "Solicitud insertada exitosamente.";
-            // Redirigir al usuario de vuelta al contenedor dentro del cliente
-            header('Location: cliente.php');
-            exit();
+            // Éxito al insertar la solicitud, definir el mensaje
+            $mensaje = "Solicitud enviada exitosamente.";
         } else {
             // Manejar el error al insertar la solicitud
             $mensaje = "Error al insertar la solicitud: " . mysqli_error($conexion);
         }
     }
 }
-
 
 mysqli_close($conexion);
 ?>
@@ -97,14 +91,17 @@ mysqli_close($conexion);
     <link rel="stylesheet" href="css/style.csss">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <title>Solicitud</title>
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+
 </head>
 
 <body>
-
     <div>
-        <div id="mensaje-container" class="mensaje-exito">
-            <?php echo $mensaje; ?>
-        </div>
+
         <form action="solicitud.php" method="post">
             <h2>Formulario de Solicitud de Insumos</h2>
 
@@ -117,7 +114,7 @@ mysqli_close($conexion);
             <label for="insumo">Insumo solicitado:</label>
             <select name="insumo" required>
                 <?php foreach ($insumos as $insumoItem) : ?>
-                    <option value="<?php echo $insumoItem['id_insumo']; ?>"><?php echo $insumoItem['insumo']; ?></option>
+                    <option value="<?php echo $insumoItem['id_insumo']; ?>"><?php echo $insumoItem['nombre']; ?></option>
                 <?php endforeach; ?>
             </select>
 
@@ -128,13 +125,17 @@ mysqli_close($conexion);
             <hr>
             <input type="submit" value="Enviar Solicitud" <?php echo $disabled; ?>>
 
-
         </form>
     </div>
 
     <script>
-        // Actualizar el contenido del contenedor de mensaje usando JavaScript
-        document.getElementById('mensaje-container').innerHTML = '<?php echo addslashes($mensaje); ?>';
+        // Mostrar mensaje emergente si hay un mensaje en la sesión
+        <?php if (!empty($mensaje)) : ?>
+
+            alert("<?php echo $mensaje; ?>");
+            window.location.href = 'cliente.php';
+
+        <?php endif; ?>
     </script>
 </body>
 

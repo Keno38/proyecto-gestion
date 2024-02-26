@@ -17,12 +17,12 @@ form {
 h1 {
   text-align: center;
   padding: 15px;
-  color: rgb(233, 230, 240);
+  color: rgb(22, 6, 58);
 }
 h2 {
   text-align: center;
   padding: 12px;
-  color: rgb(206, 203, 203);
+  color: rgb(22, 19, 19);
 }
 label {
   color: #fcfbfb;
@@ -32,7 +32,7 @@ label {
 }
 
 input {
-  border: 1px solid #ccc;
+  border: 2px solid #f51313;
   width: 100%;
   padding: 10px;
   box-sizing: border-box;
@@ -57,6 +57,17 @@ input[type="submit"]:hover {
 input::placeholder {
   color: rgba(124, 124, 124, 0.5);
 }
+input[type="button"] {
+  background-color: #48e;
+  color: #fff;
+  width: calc(80% - 100px);
+  margin: 0 10%;
+  margin-top: 22px;
+  border: none;
+}
+input[type="button"]:hover {
+  background-color: rgb(104, 160, 243);
+}
 
 .ok {
   text-align: center;
@@ -75,18 +86,26 @@ input::placeholder {
 .off {
   text-align: center;
   width: 100%;
+
   padding: 12px;
   background-color: rgb(0, 0, 0);
   color: #fff;
 }
+
 body {
-  background-image: url(../css/IMG/logo2.jpeg);
-  width: 100%;
+  background-image: url(../css/IMG/fondo.jpg);
+
   height: 100vh;
-  background-size: cover;
+  overflow: hidden;
+  background-size: cover; /* Cambiar a 'contain' si cover causa pixelación */
   background-position: center;
   background-repeat: no-repeat;
+
+  background-size: contain;
+  background-size: auto;
+  background-size: 100% 100%;
 }
+
 .mensaje {
   width: 100%;
   max-width: 350px;
@@ -135,21 +154,35 @@ header a {
   font-size: 25px;
   transition: all ease 300ms;
 }
-.login-box {
-  background-image: url(../IMG/logogae.png);
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  position: absolute;
-  top: -50px;
-  left: calc(50% - 50px);
+
+.hidden {
+  display: none;
 }
+
+#login-box {
+  top: 50%; /* Ubica el elemento en el 50% del borde superior */
+  left: 50%; /* Ubica el elemento en el 50% del borde izquierdo */
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 20px;
+  /* background-image: url(../css/IMG/Logo_BLANCO.png);*/
+  background-size: cover; /* Cambiar a 'contain' si cover causa pixelación */
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
   background-color: #360342;
   overflow: hidden;
+}
+ul li {
+  margin-bottom: 10px;
+}
+ul li a {
+  text-decoration: none;
+  color: blue;
 }
 
 li {
@@ -189,6 +222,7 @@ li a:hover {
   border: 1px solid #dddddd;
   padding: 8px;
   text-align: left;
+  border: 1px solid #dddddd;
 }
 
 .mi-tabla th {
@@ -199,11 +233,11 @@ li a:hover {
   color: #181717;
 }
 .sol-div {
-  width: 100%; /* Ancho del div */
-  height: 100%; /* Altura del div */
-  background-color: #e0e0e0; /* Color de fondo del div */
+  width: 100%;
+  height: 100%;
+  background-color: #e0e0e0;
   border: 2px solid #45045f; /* Borde del div */
-  padding: 10px; /* Espaciado interno del contenido del div */
+  padding: 20px; /* Espaciado interno del contenido del div */
   color: #333; /* Color del texto dentro del div */
   font-size: 16px; /* Tamaño de la fuente */
   text-align: center; /* Alineación del texto */
@@ -221,4 +255,27 @@ li a:hover {
   padding: 15px;
   margin-bottom: 20px;
   border-radius: 0.25rem;
+}
+.tabla-mod {
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  color: #155724;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 0.25rem;
+}
+#fanpage-container {
+  margin: 0 auto; /* Centrar horizontalmente */
+  width: 90%; /* Ancho del contenedor */
+  max-width: 600px; /* Máximo ancho para el contenedor del iframe */
+  text-align: left; /* Alinear el contenido del div */
+  padding: auto;
+  border-radius: 10px;
+  background-size: cover; /* Ajustar la imagen para cubrir todo el div */
+  background-position: center; /* Centrar la imagen de fondo */
+  height: 400px;
+}
+#main-content {
+  margin-top: 20px;
+  text-align: center;
 }

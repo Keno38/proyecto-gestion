@@ -1,6 +1,7 @@
 <?php
 session_start();
 include_once 'db.php';
+
 $host = "localhost";
 $usuario = "root";
 $clave = "";
@@ -8,7 +9,7 @@ $base_de_datos = "gestion";
 
 $conexion = mysqli_connect($host, $usuario, $clave, $base_de_datos);
 
-// Verifica si el usuario ha iniciado sesión
+// Verificar si el usuario ha iniciado sesión
 if (!isset($_SESSION['usuario'])) {
     // Si no ha iniciado sesión, redirige a la página de inicio de sesión o a donde sea necesario
     header('Location: cliente.php');
@@ -34,6 +35,8 @@ if ($resultadoDepartamento) {
 
 $nombreDepartamento = isset($_SESSION['usuario']['departamento']) ? $_SESSION['usuario']['departamento'] : '';
 
+$mensaje = "";
+
 // Verificar si se ha enviado el formulario de soporte técnico
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Recuperar valores del formulario
@@ -45,15 +48,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                           VALUES ({$usuario['id']}, '$descripcion', NOW())";
 
     if (mysqli_query($conexion, $consultaInsercion)) {
-        // Éxito al insertar la incidencia, redirigir a la página de cliente.php con un mensaje
-        $_SESSION['mensaje'] = "La solicitud se envió exitosamente.";
-        header('Location: cliente.php');
+        // Éxito al insertar la incidencia, definir el mensaje
+        $mensaje = "La solicitud se envió exitosamente.";
     } else {
+        // Error al insertar la incidencia
         echo "Error al insertar la incidencia: " . mysqli_error($conexion);
     }
 }
 mysqli_close($conexion);
-
 ?>
 
 <!DOCTYPE html>
@@ -65,6 +67,12 @@ mysqli_close($conexion);
     <link rel="stylesheet" href="css/style.csss">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <title>Soporte Técnico</title>
+    <style>
+        /* CSS para ocultar el formulario cuando se muestra el mensaje */
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -84,13 +92,17 @@ mysqli_close($conexion);
 
             <hr>
             <input type="submit" value="Enviar">
-            
             </hr>
+
         </form>
     </div>
     <script>
-        // Actualizar el contenido del contenedor de mensaje usando JavaScript
-        document.getElementById('mensaje-container').innerHTML = '<?php echo addslashes($mensaje); ?>';
+        // Mostrar un mensaje emergente con el mensaje de la sesión, luego eliminar el mensaje de la sesión
+        <?php if (!empty($mensaje)) : ?>
+            alert("<?php echo $mensaje; ?>");
+            <?php unset($_SESSION['mensaje']); ?>
+            window.location.href = 'cliente.php';
+        <?php endif; ?>
     </script>
 </body>
 

@@ -29,7 +29,8 @@ $usuario = $_SESSION['usuario'];
         <ul>
             <li><a href="#" onclick="cargarContenido('admi_soporte.php')">Administrar Soporte Tecnico </a></li>
             <li><a href="#" onclick="cargarContenido('admi_solicitud.php')">Administrar Solicitud Insumos </a></li>
-            <li><a href="#" onclick="cargarContenido('ingreso_insumo.php')">Inventario </a></li>
+            <li><a href="#" onclick="cargarContenido('inventario.php')"> Inventario </a></li>
+            <li><a href="#" onclick="cargarContenido('ingreso_insumo.php')">Producto</a></li>
             <li><a href="cerrar_sesion.php">Cerrar Sesión</a></li>
         </ul>
         <div id="main-content">
