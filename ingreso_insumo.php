@@ -8,7 +8,19 @@ $base_de_datos = "gestion";
 
 $conexion = mysqli_connect($host, $usuario, $clave, $base_de_datos);
 
+$mensaje = ""; // Inicializar la variable $mensaje
 
+// Realizar validación del formulario
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Validar los campos del formulario
+    if (empty($_POST['nombre']) || empty($_POST['departamento']) || empty($_POST['cantidad'])) {
+        $mensaje = "Por favor complete todos los campos.";
+    } else {
+        // Procesar el formulario y realizar otras acciones si es necesario
+        // Aquí podrías asignar un mensaje de éxito o realizar otras acciones
+        $mensaje = "Solicitud enviada con éxito.";
+    }
+}
 
 
 ?>

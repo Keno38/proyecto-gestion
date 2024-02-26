@@ -11,7 +11,7 @@ $conexion = mysqli_connect($host, $usuario, $clave, $base_de_datos);
 // Verifica si el usuario ha iniciado sesión
 if (!isset($_SESSION['usuario'])) {
     // Si no ha iniciado sesión, redirige a la página de inicio de sesión o a donde sea necesario
-    header('Location: login.php');
+    header('Location: cliente.php');
     exit();
 }
 
@@ -45,13 +45,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                           VALUES ({$usuario['id']}, '$descripcion', NOW())";
 
     if (mysqli_query($conexion, $consultaInsercion)) {
-        echo "Incidencia insertada exitosamente.";
-        // Puedes redirigir o mostrar un mensaje aquí según tus necesidades.
+        // Éxito al insertar la incidencia, redirigir a la página de cliente.php con un mensaje
+        $_SESSION['mensaje'] = "La solicitud se envió exitosamente.";
+        header('Location: cliente.php');
     } else {
         echo "Error al insertar la incidencia: " . mysqli_error($conexion);
     }
 }
 mysqli_close($conexion);
+
 ?>
 
 <!DOCTYPE html>
@@ -82,9 +84,14 @@ mysqli_close($conexion);
 
             <hr>
             <input type="submit" value="Enviar">
+            
             </hr>
         </form>
     </div>
+    <script>
+        // Actualizar el contenido del contenedor de mensaje usando JavaScript
+        document.getElementById('mensaje-container').innerHTML = '<?php echo addslashes($mensaje); ?>';
+    </script>
 </body>
 
 </html>

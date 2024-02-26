@@ -50,31 +50,40 @@ $insumos = mysqli_fetch_all($resultadoInsumos, MYSQLI_ASSOC);
 mysqli_free_result($resultadoInsumos);
 
 $mensaje = "";
+$disabled = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nombre = $_POST["nombre"];
     $insumo = $_POST["insumo"];
     $cantidad = $_POST["cantidad"];
 
+
+
     $consultaVerificacion = "SELECT * FROM solicitud WHERE id_usuario = {$usuario['id']} AND id_insumo = $insumo AND fecha_solicitud = NOW()";
     $resultadoVerificacion = mysqli_query($conexion, $consultaVerificacion);
 
-    if (mysqli_num_rows($resultadoVerificacion) > 0) {
+    if ($resultadoVerificacion !== null && mysqli_num_rows($resultadoVerificacion) > 0) {
         // Ya existe una solicitud para este usuario e insumo
         $mensaje = "Ya existe una solicitud para este usuario e insumo.";
+        $disabled = "disabled"; // Deshabilitar el botón de envío
+
     } else {
         // No existe, proceder con la inserción
         $consultaInsercion = "INSERT INTO solicitud (id_usuario, id_insumo, cantidad, fecha_solicitud) 
-                             VALUES ({$usuario['id']}, $insumo, $cantidad, NOW())";
+                                 VALUES ({$usuario['id']}, $insumo, $cantidad, NOW())";
 
         if (mysqli_query($conexion, $consultaInsercion)) {
             $mensaje = "Solicitud insertada exitosamente.";
+            // Redirigir al usuario de vuelta al contenedor dentro del cliente
+            header('Location: cliente.php');
+            exit();
         } else {
             // Manejar el error al insertar la solicitud
             $mensaje = "Error al insertar la solicitud: " . mysqli_error($conexion);
         }
     }
 }
+
 
 mysqli_close($conexion);
 ?>
@@ -93,7 +102,7 @@ mysqli_close($conexion);
 <body>
 
     <div>
-        <div id="mensaje-container">
+        <div id="mensaje-container" class="mensaje-exito">
             <?php echo $mensaje; ?>
         </div>
         <form action="solicitud.php" method="post">
@@ -117,7 +126,9 @@ mysqli_close($conexion);
             <input type="hidden" name="fecha_solicitud" value="<?php echo date('Y-m-d H:i:s'); ?>">
 
             <hr>
-            <input type="submit" value="Enviar Solicitud">
+            <input type="submit" value="Enviar Solicitud" <?php echo $disabled; ?>>
+
+
         </form>
     </div>
 

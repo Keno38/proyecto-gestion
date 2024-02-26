@@ -24,6 +24,14 @@ $usuario = $_SESSION['usuario'];
 </head>
 
 <body>
+    <?php
+    // Mostrar mensaje si está presente en la sesión
+    if (isset($_SESSION['mensaje'])) {
+        echo '<div class="alert alert-success">' . $_SESSION['mensaje'] . '</div>';
+        // Limpiar el mensaje de la sesión para que no se muestre nuevamente
+        unset($_SESSION['mensaje']);
+    }
+    ?>
 
     <div>
         <h1>Bienvenido, <?php echo $usuario['nombre']; ?></h1>
